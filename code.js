@@ -5,74 +5,52 @@ const tools = ["rock", "paper","scissors"]
 let humanScore = 0
 let computerScore = 0
 
-
 function getComputerChoice(){
-  let randomNumber = Math.random()
-
-  if (randomNumber <0.334){
-    return (tools[0])
-  } else if (randomNumber > 0.334 && randomNumber < 0.667){
-    return(tools[1])
-  } else {
-    return(tools[2])
-  }
-
+  return tools[Math.floor(Math.random() * tools.length)];
 }
 
 function getHumanChoice(){
-  return prompt("What dou you take rock, paper, scissors?")
+  return prompt("What do you take: rock, paper, or scissors?").toLowerCase();
 }
 
-function playRound(){
-  let computerChoice = getComputerChoice()
-  let humanChoice = getHumanChoice()
-
-  if (computerChoice === humanChoice){
-    console.log("Unentschieden, keiner einen Punkt")
+function playRound(humanChoice, computerChoice){
+  if (computerChoice === humanChoice) {
+    console.log("Unentschieden, keiner einen Punkt");
+    return;
   }
 
-  //Computer hat Stein, Spieler hat Paper -> Spieler gewinnt
-  if (computerChoice === "rock" && humanChoice === "paper"){
-    console.log("Spieler gewinnt")
-    humanScore += 1
-  }
+  const winConditions = {
+    rock: "scissors",
+    paper: "rock",
+    scissors: "paper"
+  };
 
-  //Computer hat Stein, Spieler hat Schere -> Computer gewinnt
-
-  if (computerChoice === "rock" && humanChoice === "scissors"){
-    console.log("Computer gewinnt")
-    computerScore += 1
+  if (winConditions[humanChoice] === computerChoice) {
+    console.log("Spieler gewinnt");
+    humanScore++;
+  } else {
+    console.log("Computer gewinnt");
+    computerScore++;
   }
-  //Computer hat Paper, Spieler hat Schere -> Spieler gewinnt
-  if (computerChoice === "paper" && humanChoice === "scissors"){
-    console.log("Spieler gewinnt")
-    humanScore += 1
-  }
-
-  //Computer hat Paper, Spieler hat Stein -> Computer gewinnt
-  if (computerChoice === "paper" && humanChoice === "rock"){
-    console.log("Computer gewinnt")
-    computerScore += 1
-  }
-  //Computer hat Schere, Spieler hat Papier -> Computer gewinnt
-  if (computerChoice === "scissors" && humanChoice === "paper"){
-    console.log("Computer gewinnt")
-    computerScore += 1
-  }
-
-  //Computer hat Schere, Spieler hat Stein -> Spieler gewinnt
-  if (computerChoice === "scissors" && humanChoice === "rock"){
-    console.log("Spieler gewinnt")
-    humanScore += 1
-  }
-
 }
 
-console.log("human " + humanScore)
-console.log("computer " + computerScore)
+function playGame(){
 
 while (humanScore < 3 && computerScore < 3){
-  playRound()
-  console.log("human " + humanScore)
-console.log("computer " + computerScore)
+  const computerChoice = getComputerChoice()
+  const humanChoice = getHumanChoice()
+
+  playRound(humanChoice, computerChoice)
+
+  console.log("human: " + humanScore)
+  console.log("computer: " + computerScore)
+
+  if(humanScore == 3){
+    console.log("Der Spieler hat gewonnen")
+  } else if (computerScore === 3){
+    console.log("Der Computer hat gewonnen")
+  }
 }
+}
+
+playGame()
